@@ -1,0 +1,10 @@
+flask
+flask-cors
+sqlalchemy
+flask-sqlalchemy
+pymysql
+cryptography
+jwt
+pyjwt
+pyopenssl
+requests
