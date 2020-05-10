@@ -91,6 +91,7 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.env.prod
 env/
 venv/
 ENV/
@@ -114,3 +115,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Postgres tmp data
+.data/*
+
+# Static files
+static/**
+media/**
+
+.DS_Store

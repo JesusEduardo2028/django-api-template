@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
   app:
     build:
@@ -8,20 +8,40 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -c "python manage.py wait_for_db &&
-             python manage.py migrate &&
+      sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
+    entrypoint: /entrypoint.sh
     environment:
-      - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=supersecretpassword
+      DB_HOST: db
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASS: supersecretpassword
+      DEBUG: 'True'
     depends_on:
       - db
+    stdin_open: true
+    tty: true
+    env_file: .env
 
   db:
-    image: postgres:10-alpine
+    image: postgres
     environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=supersecretpassword
+      POSTGRES_HOST: db
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecretpassword
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_postgres
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+    ports:
+      - "8080:80"
+    restart: unless-stopped

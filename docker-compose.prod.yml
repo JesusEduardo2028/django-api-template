@@ -1,0 +1,51 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./app:/app
+      - ./static:/app/static
+      - ./media:/app/media
+    command: sh -c "python manage.py collectstatic --no-input &&
+                    gunicorn app.wsgi:application --bind 0.0.0.0:5000"
+
+    entrypoint: /entrypoint.sh
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    env_file: .env.prod
+    networks:
+      - db_network
+      - nginx_network
+    expose:
+      - 5000
+
+  db:
+    image: postgres
+    env_file: .env.prod
+    networks:
+      - db_network
+  nginx:
+    image: nginx:latest
+    ports:
+      - 5000:80
+      - 80:80
+    networks:
+      - nginx_network
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./static:/static
+      - ./media:/code/media
+    depends_on:
+      - app
+
+networks:
+  nginx_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+volumes:
+  static:
+  media:
