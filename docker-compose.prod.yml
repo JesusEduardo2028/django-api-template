@@ -23,10 +23,15 @@ services:
       - 5000
 
   db:
+    container_name: postgres_db
     image: postgres
     env_file: .env.prod
     networks:
       - db_network
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
   nginx:
     image: nginx:latest
     ports:
@@ -40,6 +45,18 @@ services:
       - ./media:/code/media
     depends_on:
       - app
+
+  pgadmin:
+    container_name: postgres_pgadmin
+    env_file: .env.prod
+    image: dpage/pgadmin4
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - db_network
 
 networks:
   nginx_network:
