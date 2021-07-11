@@ -1,8 +1,18 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from core.factories import UserFactory
+
 
 class ModelTests(TestCase):
+
+    def test_user_has_valid_factory(self):
+        user = UserFactory(
+            email='me@gmail.com',
+            password='12345678',
+            name='Im me'
+        )
+        self.assertTrue(user.id is not None)
 
     def test_create_user_with_email_successful(self):
         """Test creating a new user with an email is successful"""

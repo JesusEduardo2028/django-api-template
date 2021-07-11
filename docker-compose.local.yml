@@ -1,27 +1,26 @@
-version: "3.5"
+version: "3"
 services:
   app:
     build:
       context: .
+      dockerfile: ./docker/app/Dockerfile
     ports:
       - "8000:8000"
     volumes:
       - ./app:/app
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
-    entrypoint: /entrypoint.sh
     environment:
       DB_HOST: db
       DB_NAME: postgres
       DB_USER: postgres
       DB_PASS: supersecretpassword
       DEBUG: 'True'
+      DJANGO_SETTINGS_MODULE: config.settings.local
     depends_on:
       - db
     stdin_open: true
     tty: true
     env_file: .env
+    entrypoint: /entrypoint/local.sh
 
   db:
     container_name: postgres_db
@@ -33,17 +32,4 @@ services:
       POSTGRES_PASSWORD: supersecretpassword
     ports:
       - "5432:5432"
-    restart: unless-stopped
-
-  pgadmin:
-    container_name: postgres_pgadmin
-    env_file: .env
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
-    ports:
-      - "8080:80"
     restart: unless-stopped
