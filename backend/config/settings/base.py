@@ -82,6 +82,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -171,7 +172,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'core.User'
 
 # CORS SETUP
-CORS_ORIGIN_WHITELIST = tuple(os.environ.get('CORS_ORIGIN_WHITELIST', 'http://localhost:8080').split(','))
+CORS_ORIGIN_WHITELIST = tuple(os.environ.get('CORS_ORIGIN_WHITELIST', 'http://localhost:3000,http://localhost:8080').split(','))
+CORS_ALLOWED_ORIGINS = list(CORS_ORIGIN_WHITELIST)
+CORS_ALLOW_CREDENTIALS = True
 
 # Swagger setup
 SWAGGER_SETTINGS = {
