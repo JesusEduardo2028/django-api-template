@@ -1,13 +1,12 @@
-version: "3"
 services:
-  app:
+  backend:
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: ./docker/backend/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ./backend:/backend
     environment:
       DB_HOST: db
       DB_NAME: postgres
@@ -20,7 +19,8 @@ services:
     stdin_open: true
     tty: true
     env_file: .env
-    entrypoint: /entrypoint/local.sh
+    entrypoint: /entrypoint.sh
+    command: ["django"]
 
   db:
     container_name: postgres_db

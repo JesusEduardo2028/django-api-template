@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 # setup dotenv
 import os
 from dotenv import load_dotenv
+from utils.logging.formatters import LOG_FORMATTER, LOG_MESSAGE_FORMAT
+
 load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,6 +31,36 @@ DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+        "json": {
+            "format": LOG_MESSAGE_FORMAT,
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z",
+            "()": LOG_FORMATTER,
+        },
+    },
+    'handlers': {
+        'default': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        },
+        'gunicorn': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        },
+        'null_handler': {'level': 'ERROR', 'class': 'logging.NullHandler'},
+    },
+    'loggers': {'weasyprint': {'level': 'ERROR', 'handlers': ['null_handler']}},
+    'root': {
+        'handlers': ['default'],
+        'level': 'INFO',
+    },
+}
 
 # Application definition
 
@@ -121,8 +153,6 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
@@ -153,3 +183,4 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+SWAGGER_USE_COMPAT_RENDERERS = False
