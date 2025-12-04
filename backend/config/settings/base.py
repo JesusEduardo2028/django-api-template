@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_extensions',
     'corsheaders',
-    'drf_yasg',
+    'drf_spectacular',
     # Project apps
     'core',
 ]
@@ -176,14 +176,27 @@ CORS_ORIGIN_WHITELIST = tuple(os.environ.get('CORS_ORIGIN_WHITELIST', 'http://lo
 CORS_ALLOWED_ORIGINS = list(CORS_ORIGIN_WHITELIST)
 CORS_ALLOW_CREDENTIALS = True
 
-# Swagger setup
-SWAGGER_SETTINGS = {
-   'SECURITY_DEFINITIONS': {
-      'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-      }
-   }
+# API Documentation setup with drf-spectacular
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-SWAGGER_USE_COMPAT_RENDERERS = False
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Django Template API',
+    'DESCRIPTION': 'Test description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SECURITY': [{'bearerAuth': []}],
+    'APPEND_COMPONENTS': {
+        'securitySchemes': {
+            'bearerAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'Token',
+            }
+        }
+    },
+}
