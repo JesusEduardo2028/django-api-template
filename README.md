@@ -21,8 +21,8 @@ django-api-template/
 │   ├── README.md        # Frontend documentation
 │   └── CLAUDE.md        # Frontend development guide
 ├── docker/              # Docker configuration files
-│   ├── backend/        # Backend Dockerfile and entrypoint
-│   └── frontend/       # Frontend Dockerfile and nginx config
+│   ├── backend/        # Backend Dockerfile and entr`ypoint
+│   ├── frontend/       # Frontend Dockerfile and nginx config
 └── docker-compose.yml   # Services orchestration
 ```
 
@@ -64,38 +64,14 @@ docker compose logs -f frontend     # Frontend only
 
 ## Common Commands
 
-**Backend commands**
-```bash
-# Run tests
-docker compose run --rm backend sh -c 'pytest'
-
-# Run migrations
-docker compose run --rm backend sh -c 'python manage.py migrate'
-
-# Create superuser
-docker compose run --rm backend sh -c 'python manage.py createsuperuser'
-
-# Access Django shell
-docker compose run --rm backend sh -c 'python manage.py shell'
-```
-
-**Frontend commands**
-```bash
-# Install new package
-docker compose exec frontend npm install <package-name>
-
-# Run tests
-docker compose exec frontend npm test
-
-# Build for production
-docker compose exec frontend npm run build
-```
-
-**Database**
 ```bash
 # Reset database (removes all data)
 docker compose down -v
 ```
+
+**Backend commands**: See `backend/README.md` (tests, migrations, Django shell, etc.)
+
+**Frontend commands**: See `frontend/README.md` (npm install, tests, build, etc.)
 
 ## Development
 
@@ -113,19 +89,11 @@ Detailed documentation is available in each component:
 
 ## Tech Stack
 
-**Backend:**
-- Django 4.2 LTS
-- Django REST Framework 3.15
-- PostgreSQL
-- pytest 8
-- Gunicorn 23
+- **Backend**: Django 4.2 LTS + Django REST Framework + PostgreSQL
+- **Frontend**: React 18 + TypeScript + Tailwind CSS
+- **Infrastructure**: Docker + Docker Compose
 
-**Frontend:**
-- React 18.2
-- TypeScript 4.9.5
-- React Router 6.20
-- Tailwind CSS 3.3
-- Axios 1.6
+See `backend/README.md` and `frontend/README.md` for detailed dependency versions.
 
 ## Quick Test
 

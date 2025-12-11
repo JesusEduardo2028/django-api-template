@@ -20,7 +20,7 @@ services:
     tty: true
     env_file: .env
     entrypoint: /entrypoint.sh
-    command: ["django"]
+    command: [ "django" ]
 
   frontend:
     build:
