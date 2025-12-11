@@ -1,6 +1,14 @@
-# Commit code
+---
+allowed-tools: Bash(git add:*), Bash(git commit -m:*, Bash(git checkout -b:*))
+---
 
-Review the files that have changed, and create a commit with a commit message sumarizing the changes made.
-Always try to give short concise messages that convey the business logic
+## Context
 
-Use user hints to be the message main subject $arguments
+- Current git status: `git status`
+- Current git diff: `git diff HEAD`
+- Current git branch: `git branch`
+- Recent commits: `git log -n 5`
+
+## Your Task
+
+Based on the above changes, create a single commit with a concise commit message.
